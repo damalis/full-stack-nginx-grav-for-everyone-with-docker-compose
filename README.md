@@ -26,7 +26,6 @@ Create rules to open ports to the internet, or to a specific IPv4 address or ran
 - http: 80
 - https: 443
 - portainer: 9001
-- phpmyadmin: 9090
 
 #### Contents:
 
