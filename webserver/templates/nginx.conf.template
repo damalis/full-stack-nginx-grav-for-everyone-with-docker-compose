@@ -31,12 +31,16 @@ server {
 	include /etc/letsencrypt/options-ssl-nginx.conf;		
 	
 	root /var/www/html;
-	index index.php;
+	index index.html index.php;
 	
 	location / {
 		try_files $uri /index.php$is_args$args;
 	}
 
+	location ~* ^/forms-basic-captcha-image.jpg$ {
+		try_files $uri $uri/ /index.php$is_args$args;
+	}
+		
 	location ~ \.php$ {
 		fastcgi_pass docker_grav;
 		fastcgi_index	index.php;
@@ -44,6 +48,27 @@ server {
 		include	fastcgi_params;
 	}
 	#
+	location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
+		expires 30d;
+		add_header Vary Accept-Encoding;
+		log_not_found off;
+	}
+
+	location ~* ^.+\.(?:css|cur|js|jpe?g|gif|htc|ico|png|html|xml|otf|ttf|eot|woff|woff2|svg)$ {
+		access_log off;
+		expires 30d;
+		add_header Cache-Control public;
+
+		## No need to bleed constant updates. Send the all shebang in one
+		## fell swoop.
+		tcp_nodelay off;
+
+		## Set the OS file cache.
+		open_file_cache max=3000 inactive=120s;
+		open_file_cache_valid 45s;
+		open_file_cache_min_uses 2;
+		open_file_cache_errors off;
+	}
 	## Begin - Security
 	location ~* /(\.git|cache|bin|logs|backup|tests)/.*$ {
 		return 403;
