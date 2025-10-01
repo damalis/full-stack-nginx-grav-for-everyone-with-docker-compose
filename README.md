@@ -127,7 +127,7 @@ cp env.example .env
 
 Edit the `.env` file to change values of 
 
-|```LOCAL_TIMEZONE```|```DOMAIN_NAME```|```DIRECTORY_PATH```|```LETSENCRYPT_EMAIL```|
+|```LOCAL_TIMEZONE```|```DOMAIN_NAME```|```DIRECTORY_PATH```|```LETSENCRYPT_EMAIL```|```SSL_SNIPPET```|
 
 <table><thead>
   <tr>
